@@ -7,7 +7,7 @@ export default function Content() {
       <div className="max-w-7xl w-full flex flex-col items-start text-left">
         {/* Judul di atas hero */}
         <h1 className="text-5xl md:text-6xl font-extrabold text-gray-900 leading-tight">
-          Lihat Waktumu, <br /> Rasakan Valorants
+          Lihat Waktumu, <br /> Rasakan adssa
         </h1>
 
         {/* Hero Image */}
