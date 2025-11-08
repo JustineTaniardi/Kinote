@@ -24,7 +24,7 @@ export default function Content() {
           {/* Teks di kiri atas dalam gambar */}
           <div className="absolute top-10 left-10 max-w-sm text-left">
             <p className="text-white text-sm md:text-base leading-relaxed mb-4">
-              KINOTE MENYUSAHKAN KITA DALAM MEMBUAT APLIKASI
+              Kinote Menyenangkan
             </p>
             <button className="bg-white text-gray-900 font-medium px-5 py-2.5 rounded-md shadow hover:bg-gray-100 transition">
               Lihat Fitur
