@@ -2,9 +2,13 @@ import Image from "next/image";
 
 export default function Footer() {
   return (
-    <footer id="about" className="w-full bg-[#F9FAFB] text-gray-700 pt-16 pb-10 px-6 border-t border-gray-200">
+    <footer
+      id="about"
+      className="w-full bg-[#F9FAFB] text-gray-700 pt-16 pb-10 px-6 border-t border-gray-200"
+    >
+      {/* Main */}
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-6 gap-10 items-start">
-        {/* === Kiri: Logo & Deskripsi === */}
+        {/* Left */}
         <div className="col-span-2 flex flex-col justify-start">
           {/* Logo */}
           <div className="flex items-center mb-4">
@@ -17,12 +21,12 @@ export default function Footer() {
             />
           </div>
 
-          {/* Deskripsi */}
+          {/* Desc */}
           <p className="text-[#1F2937] text-base font-medium mb-4">
             Note It Down With Kinote
           </p>
 
-          {/* Ikon Sosial (tanpa background, ukuran besar) */}
+          {/* Sosmed */}
           <div className="flex gap-5 items-center">
             <a
               href="https://www.instagram.com/justinetaniardi/"
@@ -69,7 +73,7 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* === About us === */}
+        {/* About */}
         <div className="flex flex-col justify-start">
           <h4 className="font-semibold text-base mb-3">About us</h4>
           <ul className="space-y-2 text-sm text-gray-500">
@@ -81,7 +85,7 @@ export default function Footer() {
           </ul>
         </div>
 
-        {/* === Services === */}
+        {/* Services */}
         <div className="flex flex-col justify-start">
           <h4 className="font-semibold text-base mb-3">Services</h4>
           <ul className="space-y-2 text-sm text-gray-500">
@@ -93,7 +97,7 @@ export default function Footer() {
           </ul>
         </div>
 
-        {/* === Portfolio === */}
+        {/* Portfolio */}
         <div className="flex flex-col justify-start">
           <h4 className="font-semibold text-base mb-3">Portfolio</h4>
           <ul className="space-y-2 text-sm text-gray-500">
@@ -105,7 +109,7 @@ export default function Footer() {
           </ul>
         </div>
 
-        {/* === Contact us (SEJAJAR) === */}
+        {/* Contact */}
         <div className="flex flex-col justify-start">
           <h4 className="font-semibold text-base mb-3">Contact us</h4>
           <ul className="space-y-2 text-sm text-gray-500">
@@ -118,7 +122,7 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* === Bottom line === */}
+      {/* Bottom */}
       <div className="mt-12 pt-6 text-center text-gray-400 text-sm border-t border-gray-200">
         © {new Date().getFullYear()} KINOTE. All rights reserved.
       </div>
