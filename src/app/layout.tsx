@@ -1,5 +1,4 @@
 import "./globals.css";
-import Header from "./components/Header";
 
 export const metadata = {
   title: "Kinote - Lihat Waktumu, Rasakan Perubahan",
@@ -14,8 +13,8 @@ export default function RootLayout({
   return (
     <html lang="id">
       <body className="bg-white text-black">
-        <Header />
-        <main className="pt-20">{children}</main>
+        {/* Header dihapus dari layout */}
+        <main>{children}</main>
       </body>
     </html>
   );

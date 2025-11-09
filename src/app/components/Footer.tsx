@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function Footer() {
   return (
-    <footer className="w-full bg-[#F9FAFB] text-gray-700 pt-16 pb-10 px-6 border-t border-gray-200">
+    <footer id="about" className="w-full bg-[#F9FAFB] text-gray-700 pt-16 pb-10 px-6 border-t border-gray-200">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-6 gap-10 items-start">
         {/* === Kiri: Logo & Deskripsi === */}
         <div className="col-span-2 flex flex-col justify-start">
