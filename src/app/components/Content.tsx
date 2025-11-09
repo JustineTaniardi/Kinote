@@ -7,7 +7,7 @@ export default function Content() {
       <div className="max-w-7xl w-full flex flex-col items-start text-left">
         {/* Judul di atas hero */}
         <h1 className="text-5xl md:text-6xl font-extrabold text-gray-900 leading-tight">
-          Lihat Waktumu, <br /> Rasakan adssa
+          Lihat Waktumu, <br /> Rasakan Perubahan
         </h1>
 
         {/* Hero Image */}
@@ -24,7 +24,9 @@ export default function Content() {
           {/* Teks di kiri atas dalam gambar */}
           <div className="absolute top-10 left-10 max-w-sm text-left">
             <p className="text-white text-sm md:text-base leading-relaxed mb-4">
-              Kinote Menyenangkan
+              Kinote membantu kamu mengatur tugas,
+              melacak aktivitas, dan memahami progres diri
+              semua dalam satu ruang yang jernih.
             </p>
             <button className="bg-white text-gray-900 font-medium px-5 py-2.5 rounded-md shadow hover:bg-gray-100 transition">
               Lihat Fitur
