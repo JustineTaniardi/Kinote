@@ -4,7 +4,10 @@ export default function Content() {
   return (
     <section className="w-full flex flex-col items-center justify-center px-10 md:px-16 lg:px-20 mt-12">
       {/* Hero */}
-      <div id="home" className="max-w-7xl w-full flex flex-col items-start text-left">
+      <div
+        id="home"
+        className="max-w-7xl w-full flex flex-col items-start text-left"
+      >
         {/* Title */}
         <h1 className="text-5xl md:text-6xl font-extrabold text-gray-900 leading-tight">
           Lihat Waktumu, <br /> Rasakan Perubahan
@@ -25,8 +28,8 @@ export default function Content() {
             {/* TextBtn */}
             <div className="absolute top-10 left-10 max-w-sm text-left">
               <p className="text-white text-sm md:text-base leading-relaxed mb-4">
-                Kinote membantu kamu mengatur tugas, melacak aktivitas, dan memahami progres diri
-                semua dalam satu ruang yang jernih.
+                Kinote membantu kamu mengatur tugas, melacak aktivitas, dan
+                memahami progres diri semua dalam satu ruang yang jernih.
               </p>
               <button className="border border-white text-white font-medium px-5 py-2.5 rounded-md hover:bg-white hover:text-gray-900 transition">
                 Lihat Fitur
@@ -38,8 +41,14 @@ export default function Content() {
           <div className="absolute left-1/2 -translate-x-1/2 -bottom-10 w-[85%] bg-white rounded-lg shadow-[0_4px_32px_rgba(0,0,0,0.12)] flex flex-col md:flex-row justify-between items-start md:items-center px-8 py-5 gap-6">
             {[
               { title: "Fokus", desc: "Jaga konsentrasi, tanpa gangguan." },
-              { title: "Produktif", desc: "Selesaikan lebih banyak dengan mudah." },
-              { title: "Pengingat", desc: "Selalu ingat hal penting tepat waktu." },
+              {
+                title: "Produktif",
+                desc: "Selesaikan lebih banyak dengan mudah.",
+              },
+              {
+                title: "Pengingat",
+                desc: "Selalu ingat hal penting tepat waktu.",
+              },
             ].map((item) => (
               <div key={item.title} className="flex-1 text-left">
                 <h3 className="font-semibold text-gray-900">{item.title}</h3>
@@ -56,10 +65,12 @@ export default function Content() {
       {/* Feature */}
       <div id="feature" className="max-w-7xl w-full text-center mt-24 mb-48">
         {/* Head */}
-        <h2 className="text-3xl font-bold text-gray-900 mb-2">Fitur Utama Kinote</h2>
+        <h2 className="text-3xl font-bold text-gray-900 mb-2">
+          Fitur Utama Kinote
+        </h2>
         <p className="text-gray-600 max-w-xl mx-auto mb-12">
-          Kelola tugas, pantau aktivitas, dan tingkatkan produktivitasmu dengan fitur-fitur terbaik
-          dari Kinote.
+          Kelola tugas, pantau aktivitas, dan tingkatkan produktivitasmu dengan
+          fitur-fitur terbaik dari Kinote.
         </p>
 
         {/* Cards */}
@@ -81,7 +92,10 @@ export default function Content() {
               desc: "Satu pandangan untuk melihat seberapa jauh kemajuanmu. Semua progress tersaji dengan rapi dan sederhana.",
             },
           ].map((item) => (
-            <div key={item.title} className="relative w-[340px] md:w-[360px] lg:w-[380px] group">
+            <div
+              key={item.title}
+              className="relative w-[340px] md:w-[360px] lg:w-[380px] group"
+            >
               {/* Img */}
               <div className="rounded-xl overflow-hidden shadow-md">
                 <Image
@@ -96,25 +110,24 @@ export default function Content() {
               {/* Box */}
               <div
                 className="
-                  absolute left-1/2 -translate-x-1/2 z-10
-                  bg-white rounded-xl shadow-[0_4px_25px_rgba(0,0,0,0.1)]
-                  w-[85%] px-6 overflow-hidden
-                  flex flex-col items-start justify-start
-                  transition-[height] duration-500 ease-in-out
-                  h-[80px] group-hover:h-[160px]
-                "
+    absolute left-1/2 -translate-x-1/2 z-10
+    bg-white rounded-xl shadow-[0_4px_25px_rgba(0,0,0,0.1)]
+    w-[85%] px-6 overflow-hidden
+    flex flex-col items-start justify-start
+    transition-[height] duration-500 ease-in-out
+    h-[80px] group-hover:h-[150px]"
                 style={{ top: "calc(100% - 40px)" }}
               >
-                {/* Title */}
-                <h3 className="font-semibold text-gray-900 text-lg mt-4">{item.title}</h3>
+                <h3 className="font-semibold text-gray-900 text-lg mt-4">
+                  {item.title}
+                </h3>
 
-                {/* Desc */}
                 <p
                   className="
-                    text-gray-600 text-sm mt-2 opacity-0 translate-y-3
-                    transition-all duration-500 ease-in-out delay-100
-                    group-hover:opacity-100 group-hover:translate-y-0
-                  "
+      text-gray-600 text-sm mt-1 mb-2 text-left opacity-0 translate-y-3
+      transition-all duration-500 ease-in-out delay-100
+      group-hover:opacity-100 group-hover:translate-y-0
+    "
                 >
                   {item.desc}
                 </p>
