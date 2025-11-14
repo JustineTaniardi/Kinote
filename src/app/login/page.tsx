@@ -64,7 +64,7 @@ export default function AuthPage() {
                 >
                   <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
                 </svg>
-                Home
+                Back
               </Link>
             </div>
           </div>

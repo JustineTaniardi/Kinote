@@ -31,6 +31,16 @@ export default function RegisterPage() {
 
           {/* Left */}
           <div className="relative bg-white overflow-hidden">
+            {/* Logo */}
+                        <Image
+                          src="/img/logo/logo_dark.png"
+                          alt="KINOTE"
+                          width={150}
+                          height={45}
+                          priority
+                          className="absolute top-8 left-8 h-auto w-[140px] md:w-[150px]"
+                        />
+
             {/* BgLogo */}
             <div className="absolute inset-0 pointer-events-none">
               <Image
@@ -43,43 +53,29 @@ export default function RegisterPage() {
               />
             </div>
 
-            {/* Sosmed */}
-            <div className="absolute left-6 top-6 z-10 flex items-center gap-3">
-              <a
-                href="https://www.instagram.com/justinetaniardi/"
-                target="_blank"
-                className="inline-flex h-9 w-9 items-center justify-center rounded-md bg-[#0f1a31] text-white hover:opacity-90 transition"
+            {/* Home */}
+            <div className="absolute bottom-8 left-8">
+              <Link
+                href="/"
+                className="inline-flex items-center gap-2 rounded-md border border-transparent bg-[#0f1a31] px-4 py-2 text-sm font-medium text-white hover:bg-transparent hover:border-[#0f1a31] hover:text-[#0f1a31] transition"
               >
-                <Image src="/icons/instagram.png" alt="Instagram" width={20} height={20} />
-              </a>
-              <a
-                href="https://www.linkedin.com/in/justine-taniardi/"
-                target="_blank"
-                className="inline-flex h-9 w-9 items-center justify-center rounded-md bg-[#0f1a31] text-white hover:opacity-90 transition"
-              >
-                <Image src="/icons/linkedin.png" alt="LinkedIn" width={20} height={20} />
-              </a>
-              <a
-                href="https://wa.me/6281258126007"
-                target="_blank"
-                className="inline-flex h-9 w-9 items-center justify-center rounded-md bg-[#0f1a31] text-white hover:opacity-90 transition"
-              >
-                <Image src="/icons/whatsapp.png" alt="WhatsApp" width={20} height={20} />
-              </a>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={2}
+                  stroke="currentColor"
+                  className="h-4 w-4"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+                </svg>
+                Back
+              </Link>
             </div>
           </div>
 
           {/* Right */}
           <div className="relative flex flex-col items-end justify-center bg-[#0f1a31] px-8 py-10 md:px-10 md:py-12 text-white">
-            {/* Logo */}
-            <Image
-              src="/img/auth-page/logo.png"
-              alt="KINOTE"
-              width={150}
-              height={45}
-              priority
-              className="absolute top-8 right-8 h-auto w-[140px] md:w-[150px]"
-            />
 
             {/* Text */}
             <div className="max-w-[300px] text-right">
@@ -89,26 +85,6 @@ export default function RegisterPage() {
               <p className="mt-3 text-sm text-white/70 leading-relaxed">
                 Mulai atur tugas dan aktivitasmu dengan cara yang lebih terencana.
               </p>
-            </div>
-
-            {/* Home */}
-            <div className="absolute bottom-8 right-8">
-              <Link
-                href="/"
-                className="inline-flex items-center gap-2 rounded-md border border-white px-4 py-2 text-sm font-medium text-white hover:bg-white hover:text-[#0f1a31] transition"
-              >
-                Home
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={2}
-                  stroke="currentColor"
-                  className="h-4 w-4"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                </svg>
-              </Link>
             </div>
           </div>
 
