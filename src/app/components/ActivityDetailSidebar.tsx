@@ -28,104 +28,137 @@ interface Props {
 }
 
 export default function ActivityDetailSidebar({ isOpen, onClose, item, onDelete, onEdit }: Props) {
-  const [isEditing, setIsEditing] = useState(false);
-  const [form, setForm] = useState<ActivityItem | null>(null);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setIsEditing(false);
-    setForm(item ? { ...item } : null);
-  }, [item]);
-
-  useEffect(() => {
-    if (isOpen) document.body.style.overflow = "hidden";
-    else document.body.style.overflow = "unset";
-    return () => { document.body.style.overflow = "unset"; };
+    if (isOpen) setMounted(true);
+    else {
+      const t = setTimeout(() => setMounted(false), 260);
+      return () => clearTimeout(t);
+    }
   }, [isOpen]);
 
-  if (!isOpen || !item) return null;
+  if (!mounted || !item) return null;
 
   const handleDelete = () => {
-    if (!item) return;
-    if (confirm("Hapus aktivitas ini?")) {
+    if (confirm("Delete this activity?")) {
       onDelete && onDelete(item.id);
       onClose();
     }
   };
 
-  const handleSave = () => {
-    if (!form) return;
-    const updated: ActivityItem = { ...form, updatedAt: new Date().toISOString() };
-    onEdit && onEdit(updated);
-    setIsEditing(false);
-  };
-
   return (
     <SidebarWrapper isOpen={isOpen} onClose={onClose} width="400px">
-      <div className="px-6 py-6 border-b border-gray-200 flex items-start justify-between">
-        <div>
-          {isEditing ? (
-            <input className="text-lg font-semibold outline-none" value={form?.judul || ""} onChange={(e) => setForm(f => f ? { ...f, judul: e.target.value } : f)} />
-          ) : (
-            <div className="text-lg font-semibold text-gray-900">{item.judul}</div>
-          )}
-          <div className="text-sm text-gray-500 mt-1">{item.kategori} {item.subcategory ? `| ${item.subcategory}` : ''}</div>
-        </div>
-        <button onClick={onClose} className="text-gray-800 text-3xl leading-none">✕</button>
-      </div>
-
-      <div className="px-6 py-4 flex-1 space-y-4">
-        <div>
-          <div className="text-sm text-gray-500">Hari</div>
-          <div className="bg-gray-50 border rounded-lg p-3 text-gray-700">{item.days && item.days.length ? item.days.join(', ') : '-'}</div>
-        </div>
-
-        <div>
-          <div className="text-sm text-gray-500">Repeat</div>
-          <div className="bg-gray-50 border rounded-lg p-3 text-gray-700">{item.repeatCount ? `${item.repeatCount} kali` : '-'}</div>
-        </div>
-
-        <div className="grid grid-cols-3 gap-3">
-          <div>
-            <div className="text-sm text-gray-500">Total Time</div>
-            <div className="bg-gray-50 border rounded-lg p-3 text-gray-700">{item.totalTime ? `${item.totalTime} menit` : '-'}</div>
+      {/* Header with Activity Title (Read-Only) */}
+      <div className="px-6 py-6 border-b border-gray-200 sticky top-0 bg-white z-10">
+        <div className="flex items-start justify-between gap-4">
+          <div className="flex-1 min-w-0">
+            {/* Read-only Title Display in Header */}
+            <div className="text-lg font-semibold text-gray-900 truncate">
+              {item.judul}
+            </div>
+            <div className="text-sm text-gray-500 mt-1">
+              {item.kategori}
+              {item.subcategory && ` | ${item.subcategory}`}
+            </div>
           </div>
-          <div>
-            <div className="text-sm text-gray-500">Break</div>
-            <div className="bg-gray-50 border rounded-lg p-3 text-gray-700">{item.breakTime ? `${item.breakTime} menit` : '-'}</div>
-          </div>
-          <div>
-            <div className="text-sm text-gray-500">Tanggal</div>
-            <div className="bg-gray-50 border rounded-lg p-3 text-gray-700">{item.deadline || '-'}</div>
-          </div>
-        </div>
-
-        <div>
-          <div className="text-sm text-gray-500">Status</div>
-          <div className="bg-gray-50 border rounded-lg p-3 text-gray-700">{item.status}</div>
-        </div>
-
-        <div>
-          <div className="text-sm text-gray-500 mb-2">Deskripsi</div>
-          {isEditing ? (
-            <textarea className="w-full p-3 border rounded min-h-[140px]" value={form?.description || ""} onChange={(e) => setForm(f => f ? { ...f, description: e.target.value } : f)} />
-          ) : (
-            <div className="text-gray-700 whitespace-pre-wrap">{item.description}</div>
-          )}
+          <button 
+            onClick={onClose} 
+            className="text-gray-600 hover:text-gray-900 text-2xl leading-none transition shrink-0"
+          >
+            ✕
+          </button>
         </div>
       </div>
 
-      <div className="px-6 py-4 border-t border-gray-200 flex gap-3">
-        {isEditing ? (
-          <>
-            <button onClick={() => { setIsEditing(false); setForm(item ? { ...item } : null); }} className="flex-1 px-4 py-2.5 border rounded-lg">Batal</button>
-            <button onClick={handleSave} className="flex-1 px-4 py-2.5 bg-blue-600 text-white rounded-lg">Simpan</button>
-          </>
-        ) : (
-          <>
-            <button onClick={() => setIsEditing(true)} className="flex-1 px-4 py-2.5 border rounded-lg">Edit</button>
-            <button onClick={handleDelete} className="flex-1 px-4 py-2.5 bg-red-600 text-white rounded-lg">Delete</button>
-          </>
+      <div className="px-6 py-6 flex-1 space-y-5 overflow-y-auto">
+        {/* Display Activity Information - Read Only */}
+        
+        {/* Category - moved to content area for consistency with form layout */}
+        <div>
+          <label className="text-sm font-medium text-gray-600 mb-1 block">Category</label>
+          <div className="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2.5 text-sm text-gray-900">
+            {item.kategori || "-"}
+          </div>
+        </div>
+
+        {/* Sub Category */}
+        <div>
+          <label className="text-sm font-medium text-gray-600 mb-1 block">Sub Category</label>
+          <div className="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2.5 text-sm text-gray-900">
+            {item.subcategory || "-"}
+          </div>
+        </div>
+
+        {/* Hari (Days) */}
+        <div>
+          <label className="text-sm font-medium text-gray-600 mb-1 block">Hari (Days)</label>
+          <div className="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2.5 text-sm text-gray-900">
+            {item.days && item.days.length > 0 ? item.days.join(", ") : "-"}
+          </div>
+        </div>
+
+        {/* Repeat */}
+        <div>
+          <label className="text-sm font-medium text-gray-600 mb-1 block">Repeat</label>
+          <div className="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2.5 text-sm text-gray-900">
+            {item.repeatCount || "-"}
+          </div>
+        </div>
+
+        {/* Total Time */}
+        <div>
+          <label className="text-sm font-medium text-gray-600 mb-1 block">Total Time (minutes)</label>
+          <div className="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2.5 text-sm text-gray-900">
+            {item.totalTime || "-"}
+          </div>
+        </div>
+
+        {/* Break */}
+        <div>
+          <label className="text-sm font-medium text-gray-600 mb-1 block">Break (minutes)</label>
+          <div className="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2.5 text-sm text-gray-900">
+            {item.breakTime || "-"}
+          </div>
+        </div>
+
+        {/* Status Section */}
+        {item.status && (
+          <div className="pt-2 border-t border-gray-200 mt-4">
+            <div>
+              <label className="text-sm font-medium text-gray-600 mb-1 block">Status</label>
+              <div className="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2.5 text-sm text-gray-900">
+                {item.status}
+              </div>
+            </div>
+          </div>
         )}
+
+        {/* History Section */}
+        {item.createdAt && (
+          <div className="pt-4 border-t border-gray-200">
+            <div className="text-xs text-gray-500 space-y-1">
+              <div>Created: {new Date(item.createdAt).toLocaleDateString()}</div>
+              {item.updatedAt && <div>Updated: {new Date(item.updatedAt).toLocaleDateString()}</div>}
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Action Buttons */}
+      <div className="px-6 py-4 border-t border-gray-200 flex gap-3 sticky bottom-0 bg-white">
+        <button 
+          onClick={handleDelete} 
+          className="flex-1 px-4 py-2.5 border border-red-300 text-red-600 rounded-lg text-sm font-medium hover:bg-red-50 transition"
+        >
+          Delete
+        </button>
+        <button 
+          onClick={onClose} 
+          className="flex-1 px-4 py-2.5 bg-gray-900 text-white rounded-lg text-sm font-medium hover:bg-gray-800 transition"
+        >
+          Close
+        </button>
       </div>
     </SidebarWrapper>
   );
