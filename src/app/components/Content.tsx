@@ -88,8 +88,8 @@ export default function Content() {
             },
             {
               img: "/img/landing-page/feature_3.png",
-              title: "Dashboard",
-              desc: "Satu pandangan untuk melihat seberapa jauh kemajuanmu. Semua progress tersaji dengan rapi dan sederhana.",
+              title: "Calendar",
+              desc: "Kelola dan lihat aktivitas yang telah dijadwalkan dalam tampilan kalender mingguan yang rapi.",
             },
           ].map((item) => (
             <div

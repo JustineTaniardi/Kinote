@@ -214,8 +214,8 @@ const Sidebar: React.FC<SidebarProps> = ({
   if (!mounted) {
     return (
       <div 
-        className="w-[225px] bg-white rounded-md shadow-sm border border-gray-200 flex flex-col justify-between my-4 ml-4 p-2"
-        style={{ height: 'calc(100vh - 300px)' }}
+        className="w-[225px] bg-white rounded-md shadow-sm border border-gray-200 flex flex-col justify-between my-6 ml-4 p-2"
+        style={{ height: 'calc(100vh - 48px)' }}
       >
         <div className="p-4">
           <div className="gap-2 py-5 border-b border-gray-200">
@@ -253,8 +253,8 @@ const Sidebar: React.FC<SidebarProps> = ({
 
   return (
     <div 
-      className={`w-[225px] bg-white rounded-md shadow-sm border border-gray-200 flex flex-col justify-between my-4 ml-4 p-2 ${showAnimation ? 'animate-slideDown' : ''}`}
-      style={{ height: 'calc(100vh - 300px)' }}
+      className={`w-[225px] bg-white rounded-md shadow-sm border border-gray-200 flex flex-col justify-between my-6 ml-4 p-2 ${showAnimation ? 'animate-slideDown' : ''}`}
+      style={{ height: 'calc(100vh - 48px)' }}
     >
       {/* Header dengan Logo */}
       <div className="p-4">
