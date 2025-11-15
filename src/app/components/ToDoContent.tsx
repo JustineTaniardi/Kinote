@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import AddToDo from "./AddToDo";
+import AddActivity from "./AddActivity";
 import ActivityModal from "./ActivityModal";
 
 // Interface untuk ToDo item
@@ -15,6 +16,11 @@ interface ToDoItem {
   description: string;
   createdAt?: string;
   updatedAt?: string;
+  subcategory?: string;
+  days?: string[];
+  totalTime?: string;
+  repeatCount?: string;
+  breakTime?: string;
 }
 
 interface ToDoFormData {
@@ -60,6 +66,7 @@ const ToDoContent: React.FC = () => {
 
   // State untuk sidebar
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isActivitySidebarOpen, setIsActivitySidebarOpen] = useState(false);
   
   // State untuk edit cell
   const [editingCell, setEditingCell] = useState<{
@@ -195,6 +202,27 @@ const ToDoContent: React.FC = () => {
       createdAt: new Date().toISOString(),
     };
     setTodos([...todos, newToDo]);
+  };
+
+  // Handler for AddActivity full form
+  const handleSaveActivity = (payload: any) => {
+    console.log('New Activity payload:', payload);
+    const newToDo: ToDoItem = {
+      id: todos.length + 1,
+      status: payload.status ?? 'Belum Dimulai',
+      judul: payload.title || payload.judul || 'Untitled',
+      kategori: payload.category || payload.kategori || '',
+      prioritas: payload.prioritas || 'Medium',
+      subcategory: payload.subcategory || '',
+      days: payload.days || [],
+      totalTime: payload.totalTime || payload.total_time || '',
+      repeatCount: payload.repeatCount || payload.repeat || '',
+      breakTime: payload.breakTime || payload.break || '',
+      deadline: payload.date || payload.tanggal || '',
+      description: payload.description || payload.deskripsi || '',
+      createdAt: new Date().toISOString(),
+    };
+    setTodos(prev => [...prev, newToDo]);
   };
 
   // Handler untuk update cell value
@@ -409,14 +437,23 @@ const ToDoContent: React.FC = () => {
           )}
         </div>
 
-        {/* Add ToDo Button */}
-        <button
-          onClick={() => setIsSidebarOpen(true)}
-          className="w-full bg-white rounded-lg border border-gray-200 px-6 py-4 flex items-center gap-3 text-sm text-gray-600 hover:bg-gray-50 transition shadow-sm cursor-pointer"
-        >
-          <span className="text-xl font-light text-gray-400">+</span>
-          <span className="font-normal">Tambahkan Aktivitas</span>
-        </button>
+        {/* Add Buttons: Full AddActivity (left) and Quick AddToDo (right) */}
+        <div className="flex gap-3">
+          <button
+            onClick={() => setIsActivitySidebarOpen(true)}
+            className="flex-1 bg-white rounded-lg border border-gray-200 px-6 py-4 flex items-center gap-3 text-sm text-gray-600 hover:bg-gray-50 transition shadow-sm cursor-pointer"
+          >
+            <span className="text-xl font-light text-gray-400">+</span>
+            <span className="font-normal">Tambahkan Aktivitas Lengkap</span>
+          </button>
+          <button
+            onClick={() => setIsSidebarOpen(true)}
+            className="w-48 bg-white rounded-lg border border-gray-200 px-4 py-4 flex items-center gap-3 text-sm text-gray-600 hover:bg-gray-50 transition shadow-sm cursor-pointer"
+          >
+            <span className="text-xl font-light text-gray-400">+</span>
+            <span className="font-normal">Quick ToDo</span>
+          </button>
+        </div>
       </div>
       {/* End Container */}
 
@@ -425,6 +462,11 @@ const ToDoContent: React.FC = () => {
         isOpen={isSidebarOpen}
         onClose={() => setIsSidebarOpen(false)}
         onSubmit={handleSubmitToDo}
+      />
+      <AddActivity
+        isOpen={isActivitySidebarOpen}
+        onClose={() => setIsActivitySidebarOpen(false)}
+        onSave={handleSaveActivity}
       />
       {/* Activity Modal */}
       <ActivityModal

@@ -3,34 +3,33 @@
 import React, { useEffect, useState } from "react";
 import SidebarWrapper from "./SidebarWrapper";
 
-interface ToDoItem {
+interface ActivityItem {
   id: number;
   status: string;
   judul: string;
-  kategori: string;
-  prioritas: string;
-  deadline: string;
-  description: string;
-  createdAt?: string;
-  updatedAt?: string;
+  kategori?: string;
   subcategory?: string;
   days?: string[];
   totalTime?: string;
   repeatCount?: string;
   breakTime?: string;
+  deadline?: string;
+  description?: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
-interface ActivityModalProps {
+interface Props {
   isOpen: boolean;
   onClose: () => void;
-  item: ToDoItem | null;
-  onDelete: (id: number) => void;
-  onEdit: (updated: ToDoItem) => void;
+  item: ActivityItem | null;
+  onDelete?: (id: number) => void;
+  onEdit?: (updated: ActivityItem) => void;
 }
 
-const ActivityModal: React.FC<ActivityModalProps> = ({ isOpen, onClose, item, onDelete, onEdit }) => {
+export default function ActivityDetailSidebar({ isOpen, onClose, item, onDelete, onEdit }: Props) {
   const [isEditing, setIsEditing] = useState(false);
-  const [form, setForm] = useState<ToDoItem | null>(null);
+  const [form, setForm] = useState<ActivityItem | null>(null);
 
   useEffect(() => {
     setIsEditing(false);
@@ -48,15 +47,15 @@ const ActivityModal: React.FC<ActivityModalProps> = ({ isOpen, onClose, item, on
   const handleDelete = () => {
     if (!item) return;
     if (confirm("Hapus aktivitas ini?")) {
-      onDelete(item.id);
+      onDelete && onDelete(item.id);
       onClose();
     }
   };
 
   const handleSave = () => {
     if (!form) return;
-    const updated: ToDoItem = { ...form, updatedAt: new Date().toISOString() };
-    onEdit(updated);
+    const updated: ActivityItem = { ...form, updatedAt: new Date().toISOString() };
+    onEdit && onEdit(updated);
     setIsEditing(false);
   };
 
@@ -71,16 +70,16 @@ const ActivityModal: React.FC<ActivityModalProps> = ({ isOpen, onClose, item, on
           )}
           <div className="text-sm text-gray-500 mt-1">{item.kategori} {item.subcategory ? `| ${item.subcategory}` : ''}</div>
         </div>
-        <button onClick={onClose} className="text-gray-700 text-2xl leading-none">✕</button>
+        <button onClick={onClose} className="text-gray-800 text-3xl leading-none">✕</button>
       </div>
 
       <div className="px-6 py-4 flex-1 space-y-4">
-        <div className="space-y-2">
+        <div>
           <div className="text-sm text-gray-500">Hari</div>
           <div className="bg-gray-50 border rounded-lg p-3 text-gray-700">{item.days && item.days.length ? item.days.join(', ') : '-'}</div>
         </div>
 
-        <div className="space-y-2">
+        <div>
           <div className="text-sm text-gray-500">Repeat</div>
           <div className="bg-gray-50 border rounded-lg p-3 text-gray-700">{item.repeatCount ? `${item.repeatCount} kali` : '-'}</div>
         </div>
@@ -105,7 +104,7 @@ const ActivityModal: React.FC<ActivityModalProps> = ({ isOpen, onClose, item, on
           <div className="bg-gray-50 border rounded-lg p-3 text-gray-700">{item.status}</div>
         </div>
 
-        <div className="mt-4">
+        <div>
           <div className="text-sm text-gray-500 mb-2">Deskripsi</div>
           {isEditing ? (
             <textarea className="w-full p-3 border rounded min-h-[140px]" value={form?.description || ""} onChange={(e) => setForm(f => f ? { ...f, description: e.target.value } : f)} />
@@ -130,6 +129,4 @@ const ActivityModal: React.FC<ActivityModalProps> = ({ isOpen, onClose, item, on
       </div>
     </SidebarWrapper>
   );
-};
-
-export default ActivityModal;
+}

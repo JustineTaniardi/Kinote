@@ -1,129 +1,127 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
-import Image from "next/image";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import SidebarWrapper from "./SidebarWrapper";
 
 interface AddActivityProps {
   isOpen: boolean;
   onClose: () => void;
+  onSave?: (payload: any) => void;
 }
 
-export default function AddActivity({ isOpen, onClose }: AddActivityProps) {
-  const [render, setRender] = useState(false);
+export default function AddActivity({ isOpen, onClose, onSave }: AddActivityProps) {
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    if (isOpen) setRender(true);
-    else setTimeout(() => setRender(false), 250);
+    if (isOpen) setMounted(true);
+    else {
+      const t = setTimeout(() => setMounted(false), 260);
+      return () => clearTimeout(t);
+    }
   }, [isOpen]);
 
+  // Fields
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("");
+  const [subcategory, setSubcategory] = useState("");
+  const [dayCount, setDayCount] = useState("");
+  const [days, setDays] = useState<string[]>([]);
+  const [totalTime, setTotalTime] = useState("");
+  const [repeatCount, setRepeatCount] = useState("");
+  const [breakTime, setBreakTime] = useState("");
   const [description, setDescription] = useState("");
+  const [date, setDate] = useState("");
   const [categoryError, setCategoryError] = useState<string | null>(null);
 
-  const categories = [
-    "Kerja",
-    "Belajar",
-    "Personal",
-    "Kesehatan",
-    "Kebersihan / Rumah",
-    "Proyek",
-    "Hiburan",
-    "Olahraga",
-    "Kreativitas",
-    "Finance / Keuangan",
-  ];
+  const categories = ["Akademik", "Pekerjaan", "Olahraga", "Kesehatan", "Keterampilan", "Hobi"];
+  const subcategories = ["Sub A", "Sub B", "Sub C"];
+  const dayOptions = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"];
+
+  const toggleDay = (d: string) => setDays(prev => prev.includes(d) ? prev.filter(x => x !== d) : [...prev, d]);
+
+  const clearAll = () => {
+    setTitle(""); setCategory(""); setSubcategory(""); setDays([]);
+    setTotalTime(""); setRepeatCount(""); setBreakTime(""); setDescription(""); setDate(""); setCategoryError(null);
+  };
 
   const handleSave = () => {
-    if (!category) {
-      setCategoryError("Pilih kategori terlebih dahulu");
-      return;
-    }
-    // For now, this component only matches AddToDo styling.
-    // Integration (persisting the activity) can be added via props.
-    console.log({ title, category, description });
+    if (!category) { setCategoryError("Pilih kategori terlebih dahulu"); return; }
+    const payload = { title, category, subcategory, days, totalTime, repeatCount, breakTime, description, date, status: "Belum Dimulai", createdAt: Date.now() };
+    if (onSave) onSave(payload);
+    else console.log("AddActivity payload:", payload);
+    clearAll();
     onClose();
   };
 
-  const handleClose = () => {
-    setTitle("");
-    setCategory("");
-    setDescription("");
-    setCategoryError(null);
-    onClose();
-  };
-
-  if (!render) return null;
+  if (!mounted) return null;
 
   return (
-    <AnimatePresence>
-      <motion.div
-        className="fixed inset-0 z-40"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-      >
-        {/* overlay - reuse subtle darkening (AddToDo uses black/50) */}
-        <div className="absolute inset-0 bg-black/40" onClick={handleClose} />
+    <SidebarWrapper isOpen={isOpen} onClose={() => { clearAll(); onClose(); }} width="400px">
+      <div className="px-6 py-6 border-b border-gray-200 flex items-start justify-between">
+        <div>
+          <div className="text-lg font-semibold text-gray-900">{title || "Belajar Koding"}</div>
+          <div className="text-sm text-gray-500 mt-1">Tambah Aktivitas</div>
+        </div>
+        <button onClick={() => { clearAll(); onClose(); }} className="text-gray-800 text-3xl leading-none">✕</button>
+      </div>
 
-        {/* Sidebar matching AddToDo design */}
-        <motion.div
-          onClick={(e) => e.stopPropagation()}
-          initial={{ x: "100%" }}
-          animate={{ x: isOpen ? 0 : "100%" }}
-          exit={{ x: "100%" }}
-          transition={{ duration: 0.25, ease: "easeOut" }}
-          className="absolute top-0 right-0 h-full w-[400px] bg-white shadow-2xl z-50 flex flex-col transition-transform"
-        >
-          {/* Header */}
-          <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
-            <input
-              type="text"
-              placeholder="Masukkan Judul"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              className="flex-1 text-lg font-semibold text-gray-800 bg-transparent placeholder-gray-400 focus:outline-none"
-            />
-            <button onClick={handleClose} className="text-gray-400 hover:text-gray-600 transition ml-4">✕</button>
-          </div>
+      <div className="px-6 py-4 flex-1 space-y-4">
+        <div>
+          <label className="text-sm font-medium mb-2 block">Judul</label>
+          <input value={title} onChange={(e) => setTitle(e.target.value)} className="w-full border rounded-lg px-3 py-2" placeholder="Masukkan Judul" />
+        </div>
 
-          <div className="flex-1 overflow-y-auto px-6 py-4 space-y-4">
-            {/* Category select */}
-            <div className="flex items-center gap-3 p-3 border border-gray-200 rounded-lg">
-              <img src="/img/add-activity/category_icon.png" alt="Category" className="w-5 h-5 object-contain" />
-              <select
-                value={category}
-                onChange={(e) => { setCategoryError(null); setCategory(e.target.value); }}
-                className="flex-1 text-sm text-gray-700 bg-transparent focus:outline-none"
-              >
-                <option value="">Pilih Kategori...</option>
-                {categories.map((c) => (
-                  <option key={c} value={c}>{c}</option>
-                ))}
+        <div className="grid grid-cols-2 gap-3">
+          <div>
+            <label className="text-sm font-medium mb-2 block">Kategori</label>
+            <div className="border rounded-lg px-3 py-2">
+              <select value={category} onChange={(e) => { setCategory(e.target.value); setCategoryError(null); }} className="w-full bg-transparent outline-none text-sm">
+                <option value="">Pilih kategori...</option>
+                {categories.map(c => <option key={c} value={c}>{c}</option>)}
               </select>
             </div>
-            {categoryError && <div className="text-sm text-red-600 px-3">{categoryError}</div>}
+          </div>
 
-            {/* Description */}
-            <div>
-              <div className="py-1 text-sm text-gray-600">Tambahkan Deskripsi</div>
-              <textarea
-                placeholder="Masukkan deskripsi aktivitas..."
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                rows={6}
-                className="w-full px-4 py-3 border border-gray-200 rounded-lg text-sm text-gray-700 placeholder-gray-400 focus:outline-none resize-none"
-              />
+          <div>
+            <label className="text-sm font-medium mb-2 block">Sub Category</label>
+            <div className="border rounded-lg px-3 py-2">
+              <select value={subcategory} onChange={(e) => setSubcategory(e.target.value)} className="w-full bg-transparent outline-none text-sm">
+                <option value="">Pilih Subkategori...</option>
+                {subcategories.map(s => <option key={s} value={s}>{s}</option>)}
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-3 gap-3">
+          <div>
+            <label className="text-sm font-medium mb-2 block">Day (angka)</label>
+            <input type="number" min={0} value={dayCount} onChange={(e) => setDayCount(e.target.value)} className="w-full border rounded-lg px-3 py-2" placeholder="Jumlah hari" />
+          </div>
+
+          <div>
+            <label className="text-sm font-medium mb-2 block">Hari</label>
+            <div className="border rounded-lg p-2 grid grid-cols-3 gap-2">
+              {dayOptions.map(d => (
+                <button key={d} type="button" onClick={() => toggleDay(d)} className={`px-2 py-1 text-sm rounded ${days.includes(d) ? 'bg-gray-900 text-white' : 'bg-gray-50 text-gray-700'}`}>
+                  {d}
+                </button>
+              ))}
             </div>
           </div>
 
-          <div className="px-6 py-4 border-t border-gray-200 flex gap-3">
-            <button onClick={handleClose} className="flex-1 px-4 py-2.5 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition">Batal</button>
-            <button onClick={handleSave} className="flex-1 px-4 py-2.5 bg-blue-600 rounded-lg text-sm font-medium text-white hover:bg-blue-700 transition">Simpan</button>
+          <div>
+            <label className="text-sm font-medium mb-2 block">Tanggal</label>
+            <input type="date" value={date} onChange={(e) => setDate(e.target.value)} className="w-full border rounded-lg px-3 py-2" />
           </div>
-        </motion.div>
-      </motion.div>
-    </AnimatePresence>
+        </div>
+
+      </div>
+
+      <div className="px-6 py-4 border-t border-gray-200 flex gap-3">
+        <button onClick={() => { clearAll(); onClose(); }} className="flex-1 px-4 py-2.5 border rounded-lg text-sm">Batal</button>
+        <button onClick={handleSave} className="flex-1 px-4 py-2.5 bg-blue-600 text-white rounded-lg text-sm">Simpan</button>
+      </div>
+    </SidebarWrapper>
   );
 }
