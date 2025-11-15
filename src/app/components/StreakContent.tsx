@@ -4,7 +4,7 @@ import React, { useMemo, useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import AddActivity from "./AddActivity";
 import StreakSearchBar from "./StreakSearchBar";
-import StreakActivityCard from "./StreakActivityCard";
+import ActivityItem from "./ActivityItem";
 import StreakWeeklyColumn from "./StreakWeeklyColumn";
 import StreakTimerWidget from "./StreakTimerWidget";
 import StreakDetailSidebar from "./StreakDetailSidebar";
@@ -169,74 +169,82 @@ export default function StreakContent({ onOpenAddActivity }: Props) {
   };
 
   return (
-    <div className="flex-1 bg-white p-8">
-      {/* Search Bar at the very top */}
-      <StreakSearchBar value={searchQuery} onChange={setSearchQuery} />
+    <div className="flex flex-col w-full h-screen overflow-hidden">
+      {/* Header section - fixed at top */}
+      <div className="shrink-0 bg-white border-b border-gray-200 p-6">
+        {/* Search Bar */}
+        <StreakSearchBar value={searchQuery} onChange={setSearchQuery} />
 
-      {/* Tabs below search */}
-      <div className="flex items-center gap-2 mb-6">
-        <button
-          onClick={() => setTab("blog")}
-          className={`px-4 py-2 rounded-lg font-medium transition ${
-            tab === "blog"
-              ? "bg-gray-900 text-white"
-              : "bg-white text-gray-700 border border-gray-200 hover:bg-gray-50"
-          }`}
-        >
-          Blog
-        </button>
-        <button
-          onClick={() => setTab("weekly")}
-          className={`px-4 py-2 rounded-lg font-medium transition ${
-            tab === "weekly"
-              ? "bg-gray-900 text-white"
-              : "bg-white text-gray-700 border border-gray-200 hover:bg-gray-50"
-          }`}
-        >
-          Weekly
-        </button>
+        {/* Tabs */}
+        <div className="flex items-center gap-2 mt-4">
+          <button
+            onClick={() => setTab("blog")}
+            className={`px-4 py-2 rounded-lg font-medium transition ${
+              tab === "blog"
+                ? "bg-gray-900 text-white"
+                : "bg-white text-gray-700 border border-gray-200 hover:bg-gray-50"
+            }`}
+          >
+            Blog
+          </button>
+          <button
+            onClick={() => setTab("weekly")}
+            className={`px-4 py-2 rounded-lg font-medium transition ${
+              tab === "weekly"
+                ? "bg-gray-900 text-white"
+                : "bg-white text-gray-700 border border-gray-200 hover:bg-gray-50"
+            }`}
+          >
+            Weekly
+          </button>
+        </div>
       </div>
 
-      {/* Content: Blog Tab - Grid layout with wrapping */}
-      {tab === "blog" && (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-          {filteredEntries.length > 0 ? (
-            filteredEntries.map((entry) => (
-              <div key={entry.id} className="w-full h-44">
-                <StreakActivityCard
-                  entry={entry}
+      {/* Main content area - scrollable */}
+      <div className="flex-1 overflow-auto bg-white p-6">
+        {/* Blog Tab - Responsive grid */}
+        {tab === "blog" && (
+          <div>
+            {filteredEntries.length > 0 ? (
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                {filteredEntries.map((entry) => (
+                  <div key={entry.id} style={{ width: "100%", aspectRatio: "1 / 1" }}>
+                    <ActivityItem
+                      entry={entry}
+                      onOpen={openDetail}
+                      onStart={handleStart}
+                    />
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-12 text-gray-400">
+                <p>No activities found</p>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Weekly Tab - 7 columns with horizontal scroll */}
+        {tab === "weekly" && (
+          <div className="overflow-x-auto" style={{ maxHeight: "calc(100vh - 220px)" }}>
+            <div className="flex gap-6 min-w-max pb-4">
+              {weeklyGrouped.map(({ day, activities }) => (
+                <StreakWeeklyColumn
+                  key={day}
+                  day={day}
+                  activities={activities}
                   onOpen={openDetail}
                   onStart={handleStart}
                 />
-              </div>
-            ))
-          ) : (
-            <div className="col-span-full text-center py-12 text-gray-400">
-              <p>No activities found</p>
+              ))}
             </div>
-          )}
-        </div>
-      )}
-
-      {/* Content: Weekly Tab - 7 columns with horizontal scroll */}
-      {tab === "weekly" && (
-        <div className="overflow-x-auto pb-4">
-          <div className="flex gap-4 min-w-max">
-            {weeklyGrouped.map(({ day, activities }) => (
-              <StreakWeeklyColumn
-                key={day}
-                day={day}
-                activities={activities}
-                onOpen={openDetail}
-                onStart={handleStart}
-              />
-            ))}
           </div>
-        </div>
-      )}
+        )}
+      </div>
 
-      {/* Add Button */}
-      <div className="mt-8">
+      {/* Bottom section - add button */}
+      <div className="shrink-0 bg-white border-t border-gray-200 p-6">
         <button
           onClick={() => setOpenAdd(true)}
           className="w-full bg-white rounded-lg border border-gray-200 px-6 py-4 flex items-center gap-3 text-sm text-gray-600 hover:bg-gray-50 transition shadow-sm"
