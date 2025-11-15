@@ -225,10 +225,27 @@ export default function StreakContent({ onOpenAddActivity }: Props) {
           </div>
         )}
 
-        {/* Weekly Tab - 7 columns with horizontal scroll */}
+        {/* Weekly Tab - Single scroll container with sticky header */}
         {tab === "weekly" && (
-          <div className="overflow-x-auto" style={{ maxHeight: "calc(100vh - 220px)" }}>
-            <div className="flex gap-6 min-w-max pb-4">
+          <div className="overflow-x-auto flex-1">
+            {/* Sticky day headers row - inside scroll container */}
+            <div 
+              className="flex gap-6 pb-4 mb-4 border-b border-gray-300 bg-white"
+              style={{ position: "sticky", top: 0, zIndex: 30, minWidth: "fit-content" }}
+            >
+              {weeklyGrouped.map(({ day }) => (
+                <div 
+                  key={`header-${day}`} 
+                  className="text-center" 
+                  style={{ minWidth: "220px", flexShrink: 0 }}
+                >
+                  <h3 className="text-sm font-semibold text-gray-900">{day}</h3>
+                </div>
+              ))}
+            </div>
+
+            {/* Activities container - flex row, horizontally overflowing */}
+            <div className="flex gap-6 pb-4">
               {weeklyGrouped.map(({ day, activities }) => (
                 <StreakWeeklyColumn
                   key={day}

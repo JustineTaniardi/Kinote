@@ -13,20 +13,14 @@ interface Props {
 
 export default function StreakWeeklyColumn({ day, activities, onOpen, onStart }: Props) {
   return (
-    <div className="flex flex-col" style={{ minWidth: "160px", flexShrink: 0 }}>
-      {/* Day Header */}
-      <div className="text-center mb-4 pb-2 border-b border-gray-200">
-        <h3 className="text-sm font-semibold text-gray-900">{day}</h3>
-        <p className="text-xs text-gray-500 mt-1">{activities.length} activity</p>
-      </div>
-
-      {/* Activities Column - scrollable vertically if needed */}
+    <div className="flex flex-col" style={{ minWidth: "220px", flexShrink: 0 }}>
+      {/* Activities Column - vertical stacking with consistent spacing */}
       <div className="flex flex-col gap-4">
         {activities.length > 0 ? (
           activities.map((entry) => (
             <div
               key={entry.id}
-              style={{ width: "160px", aspectRatio: "1 / 1" }}
+              style={{ width: "100%", aspectRatio: "1 / 1" }}
             >
               <ActivityItem
                 entry={entry}
