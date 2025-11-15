@@ -6,19 +6,17 @@ import ToDoContent from "../components/ToDoContent";
 export default function ToDoPage() {
   const [currentPath, setCurrentPath] = useState("/todo");
 
-  const handleAddToDo = () => {
-    console.log("Open Add ToDo Modal");
-    // TODO: Implementasi modal untuk add ToDo
-  };
-
   const handleNavigation = (path: string) => {
     setCurrentPath(path);
     console.log("Navigate to:", path);
+    // TODO: Implementasi routing ke halaman lain
   };
 
   const handleLogout = () => {
     console.log("User logged out");
-    // Implementasi logout
+    // TODO: Implementasi logout
+    // - Clear session/localStorage
+    // - Redirect ke login page
   };
 
   return (
@@ -31,8 +29,8 @@ export default function ToDoPage() {
         onLogout={handleLogout}
       />
       
-      {/* Main Content */}
-      <ToDoContent onAddToDo={handleAddToDo} />
+      {/* Main Content - Sidebar AddToDo sudah terintegrasi di dalam */}
+      <ToDoContent />
     </div>
   );
 }
